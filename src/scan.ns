@@ -76,6 +76,9 @@ export async function main(ns) {
     //Function to create hierarchy display
     let printWithChildren = function(parent, prefixes) {
         let output = "";
+        if (parent.startswith("pserv-") {
+            return output;
+        }
         for (let i = 0; i < prefixes.length; i++) output += prefixes[i];
         output += getFormattedServerName(parent);
         for (let i = 0; i < servers.length; i++) {
