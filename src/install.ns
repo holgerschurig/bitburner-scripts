@@ -1,11 +1,18 @@
+// run install
+// run install.ns --url http://localhost:8000
 export async function main(ns) {
     if (ns.getHostname() !== "home") {
         throw new Exception("Run the script from home");
     }
 
+    var data = ns.flags([
+        ["url", "https://raw.githubusercontent.com/holgerschurig/bitburner-scripts/master/src"],
+    ]);
+    ns.tprint(data.url);
+
     await ns.wget(
-        "https://raw.githubusercontent.com/holgerschurig/bitburner-scripts/master/src/updateScripts.ns",
-        "updateScripts.ns"
+         base.url + "/updateScripts.ns",
+         "updateScripts.ns"
     );
-    ns.spawn("updateScripts.ns", 1);
+    ns.spawn("updateScripts.ns", 1, "--url", base.url);
 }
