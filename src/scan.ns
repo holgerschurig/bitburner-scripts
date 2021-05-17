@@ -1,0 +1,96 @@
+// Source: https://pastebin.com/raw/M00hK3Rm
+//
+//prints the entire tree starting from home, with clickable links and nice hierarchy formatting
+export async function main(ns) {
+    let configColors = ["White", //Player-owned servers
+            "DeepPink", //Rooted faction server
+            "Purple", //Faction server
+            "Lime", //Rooted server
+            "Green", //Unrooted server
+            "White"
+        ], //Tree hierarchy piping
+        configShowPip = true, //Whether to show the lime/red rooted pip next to servers
+        configShowCC = true, //Whether to show an indicator for coding contracts.
+
+        servers = ["home"], //Main server array
+        parents = [""], //Array of server-parents
+        routes = ["home;"]; //Array of routing strings to reach each server
+
+    //Populate "servers" and "parents" arrays
+    for (let i = 0; i < servers.length; i++) {
+        let scanned = ns.scan(servers[i]);
+        for (let j = 0; j < scanned.length; j++) {
+            if (!servers.includes(scanned[j])) {
+                servers.push(scanned[j]);
+                parents.push(servers[i]);
+            }
+        }
+    }
+
+    //Populate routes text to connect to each server
+    for (let i = 1; i < servers.length; i++) {
+        let routingTarget = servers[i];
+        routes.push("");
+        while (routingTarget != "home") {
+            routes[i] = "connect " + routingTarget + ";" + routes[i];
+            routingTarget = parents[servers.indexOf(routingTarget)];
+        }
+        routes[i] = "home;" + routes[i];
+    }
+
+    //Function to get the correct server color based on configuration
+    let getServerColor = function(server) {
+        let root = ns.hasRootAccess(server),
+            factionServers = ["CSEC", "avmnite-02h", "I.I.I.I", "run4theh111z", "w0r1d_d43m0n"];
+
+        if (ns.getPurchasedServers().includes(server) || server == "home" || server.includes("hacknet")) return configColors[0];
+        if (factionServers.includes(server) && root) return configColors[1];
+        if (factionServers.includes(server)) return configColors[2];
+        if (root) return configColors[3];
+        return configColors[4];
+    };
+
+    //Function to create HTML output for server name, including click-to-connect and tooltip
+    let getFormattedServerName = function(server) {
+        let root = ns.hasRootAccess(server),
+            hLevel = ns.getServerRequiredHackingLevel(server),
+            security = [ns.getServerSecurityLevel(server), Math.round(ns.getServerMinSecurityLevel(server) * 100) / 100],
+            money = [ns.getServerMoneyAvailable(server), ns.getServerMaxMoney(server)],
+            growth = ns.getServerGrowth(server),
+            hasCC = (ns.ls(server, ".cct").length > 0);
+
+        return `<span style="color: ${(root) ? "lime" : "red"}; display: ${(configShowPip) ? "inline" : "none"}">◉</span>` +
+            `<span class="tooltip"><a class="scan-analyze-link"` +
+            `onClick="document.getElementById('terminal-input-text-box').value='${routes[servers.indexOf(server)]}';` +
+            `document.body.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, keyCode: 13}));"` +
+            `style="color: ${getServerColor(server)}">${server}` +
+            `<span class="tooltiptext"><strong>${server}</strong>\n` +
+            `Rooted: <span style="color:${(root) ? "Lime" : "Red"}">${root}</span>\n` +
+            `Hack Level Req: ${hLevel}\n` +
+            `Money: ${ns.nFormat(money[0], '$0.000a')} / ${ns.nFormat(money[1], '$0.000a')}\n` +
+            `Security: ${security[0]} / Min ${security[1]}\n` +
+            `Growth: ${growth}</span></a></span>` +
+            `<span style="color: ${(root) ? "Cyan" : "DarkCyan"}; display: ${(configShowCC && hasCC) ? "inline" : "none"}">⋐</span>`;
+    };
+
+    //Function to create hierarchy display
+    let printWithChildren = function(parent, prefixes) {
+        let output = "";
+        for (let i = 0; i < prefixes.length; i++) output += prefixes[i];
+        output += getFormattedServerName(parent);
+        for (let i = 0; i < servers.length; i++) {
+            if (parents[i] == parent) {
+                let newPrefixes = prefixes.slice();
+                if (newPrefixes[newPrefixes.length - 1] == "├>") newPrefixes[newPrefixes.length - 1] = "│ ";
+                if (newPrefixes[newPrefixes.length - 1] == "└>") newPrefixes[newPrefixes.length - 1] = "  ";
+                newPrefixes.push("└>");
+                for (let j = i + 1; j < servers.length; j++)
+                    if (parents[j] == parents[i]) newPrefixes[newPrefixes.length - 1] = "├>";
+                output += printWithChildren(servers[i], newPrefixes);
+            }
+        }
+        return output;
+    };
+
+    ns.tprint(`<span style="color: ${configColors[5]}"> ${printWithChildren(servers[0],["\n"])}</span>`);
+}

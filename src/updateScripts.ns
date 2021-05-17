@@ -9,6 +9,7 @@ const filesToDownload = [
     'playerServers.ns',
     'killAll.ns',
     'runHacking.ns',
+    'scan.ns',
 ];
 const valuesToRemove = ['BB_SERVER_MAP'];
 
