@@ -1,5 +1,8 @@
 // run install
 // run install.ns --url http://localhost:8000
+//
+// calls:       updateScripts.ns -> killAll.ns -> runHacking.ns
+
 export async function main(ns) {
     if (ns.getHostname() !== "home") {
         throw new Exception("Run the script from home");
@@ -8,11 +11,10 @@ export async function main(ns) {
     var data = ns.flags([
         ["url", "https://raw.githubusercontent.com/holgerschurig/bitburner-scripts/master/src"],
     ]);
-    ns.tprint(data.url);
+    var url = data.url + "/updateScripts.ns";
+    ns.tprint("Fetching ", url);
 
-    await ns.wget(
-         base.url + "/updateScripts.ns",
-         "updateScripts.ns"
-    );
-    ns.spawn("updateScripts.ns", 1, "--url", base.url);
+    await ns.wget(url, "updateScripts.ns");
+
+    ns.spawn("updateScripts.ns", 1, "--url", data.url);
 }
