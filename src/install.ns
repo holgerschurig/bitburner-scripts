@@ -1,0 +1,11 @@
+export async function main(ns) {
+    if (ns.getHostname() !== "home") {
+        throw new Exception("Run the script from home");
+    }
+
+    await ns.wget(
+        "https://raw.githubusercontent.com/holgerschurig/bitburner-scripts/master/src/updateScripts.ns",
+        "updateScripts.ns"
+    );
+    ns.spawn("updateScripts.ns", 1);
+}
