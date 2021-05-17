@@ -2,7 +2,17 @@
 
 - 2021-05-17:
   1. forked from github.com/moriakaice/bitburner
-  2. added install.ns into the repostory
+  2. added `install.ns` into the repostory
+  3. allow installation from your localhost, (e.g. start `python3 -m http.server
+     --cgi 8000` in your development computer, then exec `run install.ns --url
+     http://localhost:8000`). You might need browser plugins for this to work. In my
+     case, I needed to install "CORS anywhere" into Firefox and also add a rule to uBlock
+     origin to make this happen. The rule was "danielyxie.github.io localhost * allow" in
+     the tab "My rules" of the configuration settings.
+  4. `killAll.ns --stop` will now just kill everything, and not start a new
+     script automatically.
+  5. removed (almost) useless `find.ns`, added `scan.ns`
+  6. removed output of purchased servers from `scan.ns`
 
 # Bitburner scripts collection
 
