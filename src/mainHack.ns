@@ -214,21 +214,14 @@ export async function main(ns) {
         weakenCycles = growCycles;
 
         ns.tprint("");
-        ns.tprint(
-            `Selected ${bestTarget} for a target. Planning to ${action} the server. Will wake up around ${localeHHMMSS(
-        new Date().getTime() + weakenTime + 300
-      )}`
-        );
-        ns.tprint(
-            `Stock values: baseSecurity: ${serverMap.servers[bestTarget].baseSecurityLevel}; minSecurity: ${
-        serverMap.servers[bestTarget].minSecurityLevel
-      }; maxMoney: $${numberWithCommas(parseInt(serverMap.servers[bestTarget].maxMoney, 10))}`
-        );
-        ns.tprint(`Current values: security: ${Math.floor(securityLevel * 1000) / 1000}; money: $${numberWithCommas(parseInt(money, 10))}`);
-        ns.tprint(
-            `Time to: hack: ${convertMSToHHMMSS(hackTime)}; grow: ${convertMSToHHMMSS(growTime)}; weaken: ${convertMSToHHMMSS(weakenTime)}`
-        );
-        ns.tprint(`Delays: ${convertMSToHHMMSS(hackDelay)} for hacks, ${convertMSToHHMMSS(growDelay)} for grows`);
+        ns.tprint(`Target:   ${bestTarget}, ${action.toUpperCase()} till ${
+                   localeHHMMSS( new Date().getTime() + weakenTime + 300)}`);
+        ns.tprint(`Security: ${serverMap.servers[bestTarget].baseSecurityLevel} base, ${
+                   Math.floor(securityLevel * 1000) / 1000} now, ${serverMap.servers[bestTarget].minSecurityLevel} min`);
+        ns.tprint(`Money:    ${numberWithCommas(parseInt(money, 10))} now, ${
+                   numberWithCommas(parseInt(serverMap.servers[bestTarget].maxMoney, 10))} max`);
+        ns.tprint(`Times:    ${convertMSToHHMMSS(hackTime)} hack, ${convertMSToHHMMSS(growTime)} grow; ${convertMSToHHMMSS(weakenTime)} weaken`);
+        ns.tprint(`Delays:   ${convertMSToHHMMSS(hackDelay)} hack, ${convertMSToHHMMSS(growDelay)} grow`);
 
         if (action === 'weaken') {
             if (settings.changes.weaken * weakenCycles > securityLevel - serverMap.servers[bestTarget].minSecurityLevel) {
@@ -243,11 +236,8 @@ export async function main(ns) {
                 growCycles = 0;
             }
 
-            ns.tprint(
-                `Cycles ratio: ${growCycles} grow cycles; ${weakenCycles} weaken cycles; expected security reduction: ${
-          Math.floor(settings.changes.weaken * weakenCycles * 1000) / 1000
-        }`
-            );
+            ns.tprint(`Cycles:   ${growCycles} grow; ${weakenCycles} weaken; expected security reduction: ${
+                       Math.floor(settings.changes.weaken * weakenCycles * 1000) / 1000}`);
 
             for (let i = 0; i < hackableServers.length; i++) {
                 const server = serverMap.servers[hackableServers[i]];
@@ -269,7 +259,7 @@ export async function main(ns) {
             weakenCycles = weakenCyclesForGrow(growCycles);
             growCycles -= weakenCycles;
 
-            ns.tprint(`Cycles ratio: ${growCycles} grow cycles; ${weakenCycles} weaken cycles`);
+            ns.tprint(`Cycles:   ${growCycles} grow; ${weakenCycles} weaken`);
 
             for (let i = 0; i < hackableServers.length; i++) {
                 const server = serverMap.servers[hackableServers[i]];
@@ -308,7 +298,7 @@ export async function main(ns) {
                 hackCycles -= Math.ceil((weakenCycles * 1.75) / 1.7);
             }
 
-            ns.tprint(`Cycles ratio: ${hackCycles} hack cycles; ${growCycles} grow cycles; ${weakenCycles} weaken cycles`);
+            ns.tprint(`Cycles:   ${hackCycles} hack, ${growCycles} grow; ${weakenCycles} weaken`);
 
             for (let i = 0; i < hackableServers.length; i++) {
                 const server = serverMap.servers[hackableServers[i]];
