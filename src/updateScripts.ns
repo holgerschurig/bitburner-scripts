@@ -11,7 +11,7 @@ const filesToDownload = [
     'grow.ns',
     'hack.ns',
     'weaken.ns',
-    'playerServers.ns',
+    'buyServers.ns',
     'killAll.ns',
     'runHacking.ns',
     'scan.ns',

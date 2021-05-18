@@ -13,7 +13,7 @@ const scriptsToKill = [
     'grow.ns',
     'hack.ns',
     'weaken.ns',
-    'playerServers.ns',
+    'buyServers.ns',
     'runHacking.ns',
     'initHacking.ns',
     'start.ns',
