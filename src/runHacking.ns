@@ -13,12 +13,12 @@ export async function main(ns) {
         throw new Exception('Run the script from home');
     }
 
+    ns.tprint("Spawning spider.ns");
+    await ns.run('spider.ns', 1, 'mainHack.ns');
+
     const homeRam = ns.getServerRam('home').shift();
     if (homeRam >= 32) {
         ns.tprint("Spawning buyServers.ns");
         ns.spawn('buyServers.ns', 1);
     }
-
-    ns.tprint("Spawning spider.ns");
-    await ns.run('spider.ns', 1, 'mainHack.ns');
 }
