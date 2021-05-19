@@ -1,4 +1,4 @@
-// run install
+// run install.ns
 // run install.ns --url http://localhost:8000
 //
 // calls:       updateScripts.ns -> killAll.ns -> runHacking.ns

@@ -1,6 +1,7 @@
-// run killAll                  kill all, then start runHacking.ns
-// run killAll [script]         kill all, then run $script
-// run killAll --stop           kill all, then stop
+// run killAll.ns                  kill all, then start runHacking.ns
+// run killAll.ns [script]         kill all, then run $script
+// run killAll.ns --stop           kill all, then stop
+
 const settings = {
     mapRefreshInterval: 24 * 60 * 60 * 1000,
     keys: {

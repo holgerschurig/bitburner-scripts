@@ -1,3 +1,9 @@
+// run runHacking.ns
+//
+// called from: killAll.ns
+//
+// Start this script after you augmented.
+
 export async function main(ns) {
     ns.tprint(`[${localeHHMMSS()}] Starting runHacking.ns`);
 

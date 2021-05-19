@@ -1,3 +1,12 @@
+// Run: run scan.ns
+//
+// Source: https://pastebin.com/raw/M00hK3Rm
+//
+// Prints the entire tree starting from home, with clickable links and nice
+// hierarchy formatting
+
+export async function main(ns) {
+    let configColors = ["White", //Player-owned servers
 // Source: https://pastebin.com/raw/M00hK3Rm
 //
 //prints the entire tree starting from home, with clickable links and nice hierarchy formatting
