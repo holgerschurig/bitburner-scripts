@@ -159,11 +159,11 @@ export async function main(ns) {
     ns.tprint("Starting mainHack.ns");
 
     let hostname = ns.getHostname();
-
     if (hostname !== 'home') {
         throw new Exception('Run the script from home');
     }
 
+    let bestTarget = "";
     while (true) {
         const serverExtraData = {};
         const serverMap = getItem(settings.keys.serverMap);
@@ -181,7 +181,9 @@ export async function main(ns) {
 
         const hackableServers = getHackableServers(ns, serverMap.servers);
         const targetServers = findTargetServer(ns, hackableServers, serverMap.servers, serverExtraData);
-        const bestTarget = targetServers.shift();
+        if (bestTarget == "") {
+            bestTarget = targetServers.shift();
+        }
 
         const hackTime = ns.getHackTime(bestTarget) * 1000;
         const growTime = ns.getGrowTime(bestTarget) * 1000;
@@ -327,6 +329,7 @@ export async function main(ns) {
                     weakenCycles -= cyclesFittable;
                 }
             }
+            bestTarget = targetServers.shift();
         }
 
         await ns.sleep(weakenTime + 300);
