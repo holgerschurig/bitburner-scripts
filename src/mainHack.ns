@@ -223,7 +223,7 @@ export async function main(ns) {
         ns.tprint(`Money:    ${numberWithCommas(parseInt(money, 10))} now, ${
                    numberWithCommas(parseInt(serverMap.servers[bestTarget].maxMoney, 10))} max`);
         ns.tprint(`Times:    ${convertMSToHHMMSS(hackTime)} hack, ${convertMSToHHMMSS(growTime)} grow, ${convertMSToHHMMSS(weakenTime)} weaken`);
-        ns.tprint(`Delays:   ${convertMSToHHMMSS(hackDelay)} hack, ${convertMSToHHMMSS(growDelay)} grow`);
+        //ns.tprint(`Delays:   ${convertMSToHHMMSS(hackDelay)} hack, ${convertMSToHHMMSS(growDelay)} grow`);
 
         if (action === 'weaken') {
             if (settings.changes.weaken * weakenCycles > securityLevel - serverMap.servers[bestTarget].minSecurityLevel) {
