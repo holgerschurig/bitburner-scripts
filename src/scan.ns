@@ -85,7 +85,7 @@ export async function main(ns) {
     //Function to create hierarchy display
     let printWithChildren = function(parent, prefixes) {
         let output = "";
-        if (parent.startswith("pserv-") {
+        if (parent.startsWith("pserv-")) {
             return output;
         }
         for (let i = 0; i < prefixes.length; i++) output += prefixes[i];
